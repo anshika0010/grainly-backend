@@ -8,11 +8,11 @@ export const connectDB = async () => {
     }
 
     // Force local MongoDB connection
-    const mongoUri = "mongodb://localhost:27017/grainly";
+    const mongoUri = "mongodb+srv://anshikabhadoria88_db_user:W0ebRgV2P3VDW4EZ@products.4rtfnbc.mongodb.net/?appName=products";
 
     console.log("🔗 Connecting to local MongoDB...");
     await mongoose.connect(mongoUri);
-    console.log("✅ MongoDB Connected: localhost:27017/grainly");
+    console.log("✅ MongoDB Connected:");
   } catch (error) {
     console.error("❌ MongoDB connection failed:", error.message);
     console.log("💡 Make sure MongoDB is running locally on port 27017");
