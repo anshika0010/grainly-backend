@@ -351,32 +351,64 @@ export const deleteProduct = async (req, res) => {
 
 // Get all flavours from products
 
+// export const getAllFlavours = async (req, res) => {
+//   try {
+//     // Fetch only flavour and _id
+//     const products = await Product.find({}, "_id flavour itemName ");
+
+//     // Remove empty/null flavour values
+//     const validProducts = products.filter((p) => p.flavour && p.flavour.trim());
+
+//     // Optional: Remove duplicates by flavour name (keep the first product for each flavour)
+//     const uniqueFlavours = [];
+//     const seen = new Set();
+
+//     for (const p of validProducts) {
+//       if (!seen.has(p.flavour)) {
+//         seen.add(p.flavour);
+//         uniqueFlavours.push({
+//           id: p._id,
+//           flavour: p.flavour,
+//           itemName: p.itemName,
+//         });
+//       }
+//     }
+
+//     res.status(200).json(uniqueFlavours);
+//   } catch (error) {
+//     console.error("Error fetching flavours:", error);
+//     res.status(500).json({ message: "Server error while fetching flavours" });
+//   }
+// };
+// export const getAllFlavours = async (req, res) => {
+//   try {
+//     const products = await Product.find(
+//       { flavour: { $ne: null } },
+//       "_id flavour itemName"
+//     );
+
+//     const result = products.map((p) => ({
+//       id: p._id,
+//       flavour: p.flavour,
+//       itemName: p.itemName,
+//     }));
+
+//     res.status(200).json(result);
+//   } catch (error) {
+//     console.error("Error fetching flavours:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
 export const getAllFlavours = async (req, res) => {
   try {
-    // Fetch only flavour and _id
-    const products = await Product.find({}, "_id flavour");
+    const products = await Product.find({}).lean();
 
-    // Remove empty/null flavour values
-    const validProducts = products.filter((p) => p.flavour && p.flavour.trim());
+    console.log("FIRST PRODUCT 👉", products[0]);
 
-    // Optional: Remove duplicates by flavour name (keep the first product for each flavour)
-    const uniqueFlavours = [];
-    const seen = new Set();
-
-    for (const p of validProducts) {
-      if (!seen.has(p.flavour)) {
-        seen.add(p.flavour);
-        uniqueFlavours.push({
-          id: p._id,
-          flavour: p.flavour,
-        });
-      }
-    }
-
-    res.status(200).json(uniqueFlavours);
-  } catch (error) {
-    console.error("Error fetching flavours:", error);
-    res.status(500).json({ message: "Server error while fetching flavours" });
+    res.json(products);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 };
 
